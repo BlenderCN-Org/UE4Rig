@@ -1,4 +1,5 @@
 import bpy
+import os
 
 bl_info = {
   'name': "UE4Rig",
@@ -10,6 +11,25 @@ bl_info = {
   'category': 'Animation'
 }
 
+class AddRig(bpy.types.Operator):
+  """Adds a new rig"""
+  bl_label = "Add Rig"
+  bl_idname = "ue4rig.add_rig"
+
+  def execute(self, context):
+
+    TemplateFilepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Mannequin.blend")
+    Section = "\\Object"
+    ObjectName = "SK_Mannequin.001"
+    TemplateDirectory = TemplateFilepath + Section
+
+    bpy.ops.wm.append(
+        filepath=TemplateFilepath + Section + ObjectName,
+        filename=ObjectName,
+        directory=TemplateDirectory,
+        autoselect=True
+      )
+    return {'FINISHED'}
 
 class UE4Rig_Tools(bpy.types.Panel):
   """UE4Rig Panel"""
@@ -20,6 +40,11 @@ class UE4Rig_Tools(bpy.types.Panel):
 
   def draw(self, context):
     layout = self.layout
+
+    row = layout.row()
+    row.label("Setup")
+    row = layout.row()
+    row.operator("ue4rig.add_rig")
 
 def register():
   bpy.utils.register_module(__name__)
