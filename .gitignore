@@ -2,3 +2,6 @@
 __pycache__/
 # Blender auto backup file
 Mannequin.blend1
+# vscode
+.vs/
+.vscode/

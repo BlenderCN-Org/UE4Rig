@@ -1,17 +1,18 @@
 import bpy
 import os
+import gpu
 
 bl_info = {
   'name': "UE4Rig",
   "author": 'Mack Thompson',
   'version': (0, 0, 1),
-  'blender': (2, 79, 0),
+  'blender': (2, 80, 0),
   'description': 'Creates rigs using the UE4 skeleton',
   'license': 'MIT',
   'category': 'Animation'
 }
 
-class AddRig(bpy.types.Operator):
+class UE4Rig_addrig_operator(bpy.types.Operator):
   """Adds a new rig"""
   bl_label = "Add Rig"
   bl_idname = "ue4rig.add_rig"
@@ -31,26 +32,32 @@ class AddRig(bpy.types.Operator):
       )
     return {'FINISHED'}
 
-class UE4Rig_Tools(bpy.types.Panel):
+class UE4Rig_panel(bpy.types.Panel):
   """UE4Rig Panel"""
-  bl_label = "UE4Rig"
+  bl_label = "UE4 Rig"
   bl_space_type = "VIEW_3D"
-  bl_region_type = 'TOOLS'
-  bl_category = "UE4Rig"
+  bl_region_type = 'UI'
 
   def draw(self, context):
     layout = self.layout
 
     row = layout.row()
-    row.label("Setup")
+    row.label(text="Setup")
     row = layout.row()
     row.operator("ue4rig.add_rig")
 
+classes = { 
+  UE4Rig_panel,
+  UE4Rig_addrig_operator
+}
+
 def register():
-  bpy.utils.register_module(__name__)
+  for cls in classes:
+    bpy.utils.register_class(cls)
 
 def unregister():
-  bpy.utils.unregister_module(__name__)
+  for cls in classes:
+    bpy.utils.unregister_class(cls)
 
   if __name__ == "__main__":
     register()
